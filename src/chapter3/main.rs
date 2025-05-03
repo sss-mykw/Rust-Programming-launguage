@@ -4,9 +4,9 @@ use std::io;
 const MAX_POINTS: u32 = 100_000;
 
 fn main() {
-    practice_3_1();
-    println!("-------------------------------------");
-    practice_3_2();
+    // practice_3_1();
+    // practice_3_2();
+    practice_3_3();
 }
 
 fn practice_3_1() {
@@ -106,4 +106,41 @@ fn practice_3_2() {
 
         println!("The value of the element at index {} is: {}", index, element);
     }
+}
+
+fn practice_3_3() {
+    // 関数の引数
+    {
+        print_labeled_measurement(5, 'h');
+    }
+
+    // 文と式
+    {
+        // 文
+        // 値を返さない
+        let y = 6;
+
+        let y = {
+            let x = 3;
+            // セミコロンを付けてしまうと、式ではなく文になってしまい、値を返さなくなってしまう点に注意
+            x + 1
+        };
+
+        println!("The value of y is: {}", y);
+    }
+
+    // 戻り値のある関数
+    {
+        let x = plus_one(5);
+        println!("The value of x is: {}", x);
+    }
+}
+
+fn print_labeled_measurement(value: i32, unit_label: char) {
+    println!("The measurement is: {}{}", value, unit_label);
+}
+
+fn plus_one(x: i32) -> i32 {
+    // 同様にセミコロンを付けてしまうと、返り値の型定義と矛盾し、コンパイルエラーとなる
+    x + 1
 }
