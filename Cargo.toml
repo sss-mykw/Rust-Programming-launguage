@@ -3,4 +3,12 @@ name = "Rust-Programming-launguage"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "chap1"
+path = "src/chapter1/main.rs"
+
+[[bin]]
+name = "chap3"
+path = "src/chapter3/main.rs"
+
 [dependencies]
