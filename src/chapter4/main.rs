@@ -1,6 +1,7 @@
 fn main() {
     // practice_4_1();
-    practice_4_2();
+    // practice_4_2();
+    practice_4_3();
 }
 
 fn practice_4_1() {
@@ -126,4 +127,34 @@ fn no_dangle() -> String {
     
     // 所有権がムーブされる
     s
+}
+
+fn practice_4_3() {
+    // String型
+    let my_string = String::from("hello world");
+    let word = first_word(&my_string[..]);
+    println!("The first word is {}", word);
+
+    // &'static str 型
+    let my_string_literal = "hello world";
+
+    let word = first_word(&my_string_literal[..]);
+    println!("The first word is {}", word);
+
+    // 文字列リテラルは「それ自体すでに文字列スライスなので」、スライス記法なしでも機能するのだ！
+    let word = first_word(my_string_literal);
+    println!("The first word is {}", word);
+}
+
+// &Stringではなく&strにすると柔軟性が上がる
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
 }
