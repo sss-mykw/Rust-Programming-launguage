@@ -19,4 +19,8 @@ path = "src/chapter4/main.rs"
 name = "chap5"
 path = "src/chapter5/main.rs"
 
+[[bin]]
+name = "chap6"
+path = "src/chapter6/main.rs"
+
 [dependencies]
