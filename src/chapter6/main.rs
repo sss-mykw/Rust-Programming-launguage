@@ -1,6 +1,7 @@
 fn main() {
     // practice_6_1();
-    practice_6_2();
+    // practice_6_2();
+    practice_6_3();
 }
 
 fn practice_6_1() {
@@ -122,5 +123,22 @@ fn plus_one(x: Option<i32>) -> Option<i32> {
     match x {
         None => None,
         Some(i) => Some(i + 1),
+    }
+}
+
+fn practice_6_3() {
+    let some_u8_value = Some(0u8);
+    if let Some(3) = some_u8_value {
+        println!("three");
+    }
+
+    let mut count = 0;
+    // let coin = Coin::Quarter(UsState::Alaska);
+    let coin = Coin::Nickel;
+    if let Coin::Quarter(state) = coin {
+        println!("State quarter from {:?}!", state);
+    } else { 
+        count += 1;
+        println!("count = {}", count);
     }
 }
