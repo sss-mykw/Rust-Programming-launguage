@@ -1,3 +1,11 @@
+// 関数に対してuseを使う場合は関数名を含めてしまうと、
+// 関数がどこから持ち込まれたかわからなくなるので関数名は含めないのが慣例
+// useと絶対パス
+use crate::front_of_house::hosting;
+// useと相対パス
+use self::front_of_house::hosting;
+pub use crate::front_of_house::hosting;
+
 mod front_of_house {
     pub mod hosting {
         pub fn add_to_waitlist() {
@@ -63,6 +71,9 @@ pub fn eat_at_restaurant() {
 
         // 相対パス
         front_of_house::hosting::add_to_waitlist();
+
+        // useキーワード使用
+        hosting::add_to_waitlist();
     }
 
     // 相対パスをsuperで始める
