@@ -4,7 +4,7 @@
 branch_name=$(git branch --show-current)
 
 # ブランチ名が ChapterX の形式かチェック
-if [[ "$branch_name" =~ ^Chapter([0-9]+)$ ]]; then
+if [[ "$branch_name" =~ ^chapter([0-9]+)$ ]]; then
   chapter_num="${BASH_REMATCH[1]}"
 else
   echo "エラー: ブランチ名が 'chapterX' の形式ではありません（期待するブランチ形式の例: chapter3）"
