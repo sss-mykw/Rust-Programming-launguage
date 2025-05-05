@@ -12,7 +12,7 @@ else
 fi
 
 # 作成するディレクトリのパス
-chapter_dir="./src/Chapter${chapter_num}"
+chapter_dir="./src/chapter${chapter_num}"
 
 # すでに存在していたら警告（上書きしない）
 if [[ -e "$chapter_dir" ]]; then
@@ -30,4 +30,4 @@ fn main() {
 }
 EOF
 
-echo "Chapter${chapter_num} ディレクトリと main.rs を作成しました。"
+echo "chapter${chapter_num} ディレクトリと main.rs を作成しました。"
