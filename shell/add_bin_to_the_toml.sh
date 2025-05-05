@@ -16,6 +16,7 @@ cargo_toml="./Cargo.toml"
 
 # 追記内容を作成
 entry=$(cat <<EOF
+
 [[bin]]
 name = "chap$chapter_num"
 path = "src/chapter$chapter_num/main.rs"
