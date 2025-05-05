@@ -1,1 +1,0 @@
-/Users/masashi/RustroverProjects/Rust-Programming-launguage/restaurant/target/debug/restaurant: /Users/masashi/RustroverProjects/Rust-Programming-launguage/restaurant/src/lib.rs /Users/masashi/RustroverProjects/Rust-Programming-launguage/restaurant/src/main.rs
