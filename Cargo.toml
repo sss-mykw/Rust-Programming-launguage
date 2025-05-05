@@ -3,6 +3,8 @@ name = "Rust-Programming-launguage"
 version = "0.1.0"
 edition = "2024"
 
+[dependencies]
+
 [[bin]]
 name = "chap1"
 path = "src/chapter1/main.rs"
@@ -22,5 +24,3 @@ path = "src/chapter5/main.rs"
 [[bin]]
 name = "chap6"
 path = "src/chapter6/main.rs"
-
-[dependencies]
