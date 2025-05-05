@@ -13,4 +13,6 @@ exit_with_error() {
 
 ./shell/add_bin_to_the_toml.sh || exit_with_error "add_bin_to_the_toml.sh の実行に失敗しました"
 
+./shell/copy_run_config.sh || exit_with_error "copy_run_config.sh の実行に失敗しました"
+
 echo "すべての処理が正常に完了しました！"
