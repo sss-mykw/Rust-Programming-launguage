@@ -1,6 +1,9 @@
+use std::collections::HashMap;
+
 fn main() {
     // practice_8_1();
-    practice_8_2();
+    // practice_8_2();
+    practice_8_3();
 }
 
 fn practice_8_1() {
@@ -90,7 +93,7 @@ fn practice_8_2() {
         let s = data.to_string();
         let s = String::from("initial contents");
     }
-    
+
     // 文字列を更新する
     {
         let mut s = String::from("foo");
@@ -122,5 +125,93 @@ fn practice_8_2() {
         println!("{}", s1);
         println!("{}", s2);
         println!("{}", s3);
+    }
+}
+
+fn practice_8_3() {
+    // 新規ハッシュマップを生成する
+    {
+        let mut scores = HashMap::new();
+        
+        scores.insert(String::from("Blue"), 10);
+        scores.insert(String::from("Yellow"), 50);
+    }
+
+    {
+        let teams = vec![String::from("Blue"), String::from("Yellow")];
+        let initial_scores = vec![10, 50];
+        
+        // _はベクタの型を用いて推論させるために明示しないといけない
+        let mut scores: HashMap<_, _> =
+            teams.iter().zip(initial_scores.iter()).collect();
+        
+        println!("{:?}", scores);
+    }
+    
+    // ハッシュマップと所有権
+    {
+        let field_name = String::from("Favorite color");
+        let field_value = String::from("Blue");
+        let mut map = HashMap::new();
+        map.insert(field_name, field_value);
+        // インサートした値は所有権が奪われるので使用出来なくなる
+        // field_name
+        
+        let mut map = HashMap::new();
+        let not_removed_key = String::from("hoge");
+        let not_removed_value = String::from("fuga");
+        // 値への参照をハッシュマップに入れた場合は、所有権が移らない
+        map.insert(&not_removed_key, &not_removed_value);
+        println!("{:?}", map);
+        println!("{:?}", not_removed_value);
+    }
+
+    // ハッシュマップの値にアクセスする
+    {
+        let mut scores = HashMap::new();
+        scores.insert(String::from("Blue"), 10);
+        scores.insert(String::from("Yellow"), 50);
+        
+        for (key, value) in &scores {
+            //　挿入順ではないことに注意すること
+            println!("{}: {}", key, value);
+        }
+    }
+    
+    // ハッシュマップを更新する
+    {
+        // 値を上書きするケース
+        {
+            let mut scores = HashMap::new();
+            scores.insert(String::from("Blue"), 10);
+            scores.insert(String::from("Blue"), 25);
+            // memo 直感通り新しい値に上書きされて25になる
+            println!("{:?}", scores);
+        }
+        
+        // キーに値がなかった時のみ値を挿入する
+        {
+            let mut scores = HashMap::new();
+            scores.insert(String::from("Blue"), 10);
+            
+            scores.entry(String::from("Yellow")).or_insert(50);
+            scores.entry(String::from("Blue")).or_insert(50);
+            
+            println!("{:?}", scores);
+        }
+        
+        // 古い値に基づいて値を更新する
+        {
+            let text = "hello world wonderful world";
+            let mut map = HashMap::new();
+            
+            for word in text.split_whitespace() {
+                let count = map.entry(word).or_insert(0);
+                // 参照外しを忘れずに
+                *count += 1;
+            }
+            
+            println!("{:?}", map);
+        }
     }
 }
