@@ -2,7 +2,8 @@ use std::fmt::{format, Debug, Display};
 
 fn main() {
     // practice_10_1()
-    practice_10_2()
+    // practice_10_2()
+    practice_10_3()
 }
 
 fn practice_10_1() {
@@ -143,4 +144,63 @@ impl <T: PartialOrd + Display> Pair<T> {
             println!("The largest member is y = {}", self.y);
         }
     }
+}
+
+fn practice_10_3() {
+    // 関数シグニチャにおけるライフタイム注釈
+    {
+        let string1 = String::from("abcd");
+        let string2 = "xyz";
+
+        let result = longest(string1.as_str(), string2);
+        // 最長の文字列は、{}です
+        println!("The longest string is {}", result);
+    }
+
+    // ライフタイムが異なる例
+    {
+        let string1 = String::from("long string is long");
+        {
+            let string2 = String::from("xyz");
+            // resultがstring1とstring2の内、狭いスコープ内で利用されているので問題なし
+            let result = longest(string1.as_str(), string2.as_str());
+            println!("The longest string is 「{}」", result);
+        }
+    }
+
+    // ライフタイムが異なる例
+    {
+        let string1 = String::from("long string is long");
+        // resultがstring1とstring2の内、広いスコープ内で利用されているので問題あり
+        let result;
+        {
+            let string2 = String::from("xyz");
+            result = longest(string1.as_str(), string2.as_str());
+        }
+        // println!("The longest string is {}", result);
+    }
+    
+    // 構造体定義のライフタイム注釈
+    {
+        let novel = String::from("Call me Ishmael. Some years ago...");
+        let first_sentence = novel.split('.').next().expect("Could not find a '.'");
+        let i = ImportantExcerpt { part: first_sentence };
+        println!("First sentence: {}", i.part);
+    }
+}
+
+// x、ｙのどちらの参照を返すのかがわからない
+// → ライフタイムの注記が必要
+// 引数xとyの両方と戻り値に同じ記号でマークすることで、どちらの引数を返しても生存期間は同じであることを表現できる
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+// ImportantExcerptのインスタンスがpartフィールドに保持している参照よりも長生きしない
+struct ImportantExcerpt<'a> {
+    part: &'a str,
 }
