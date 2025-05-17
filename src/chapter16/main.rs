@@ -1,10 +1,12 @@
-use std::sync::mpsc;
+use std::rc::Rc;
+use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 
 fn main() {
     // practice_16_1();
-    practice_16_2();
+    // practice_16_2();
+    practice_16_3();
 }
 
 fn practice_16_1() {
@@ -139,5 +141,42 @@ fn practice_16_2() {
         for received in rx {
             println!("Got: {}", received);
         }
+    }
+}
+
+fn practice_16_3() {
+    // Mutex<T>のAPI
+    {
+        let m = Mutex::new(5);
+        {
+            // ロックを取得する
+            let mut num = m.lock().unwrap();
+            *num = 6;
+        }
+        
+        println!("m = {:?}", m);
+    }
+    
+    // 複数のスレッド間でMutex<T>を共有する
+    // 複数のスレッドで複数の所有権
+    // Arc<T>で原子的な参照カウント
+    {
+        let counter = Arc::new(Mutex::new(0));
+        let mut handles = vec![];
+        
+        for _ in 0..10 {
+            let counter = Arc::clone(&counter);
+            let handle = thread::spawn(move || {
+                let mut num = counter.lock().unwrap();
+                *num += 1;
+            });
+            handles.push(handle);
+        }
+        
+        for handle in handles {
+            handle.join().unwrap();
+        }
+        
+        println!("Result: {}", *counter.lock().unwrap());
     }
 }
