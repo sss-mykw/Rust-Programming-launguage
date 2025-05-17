@@ -40,3 +40,7 @@ path = "src/chapter9/main.rs"
 [[bin]]
 name = "chap10"
 path = "src/chapter10/main.rs"
+
+[[bin]]
+name = "chap16"
+path = "src/chapter16/main.rs"
