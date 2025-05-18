@@ -3,7 +3,8 @@ use crate::List::{Cons, Nil};
 
 fn main() {
     // practice_15_1();
-    practice_15_2();
+    // practice_15_2();
+    practice_15_3();
 }
 
 fn practice_15_1() {
@@ -87,4 +88,35 @@ impl<T> Deref for MyBox<T> {
 
 fn hello(name: &str) {
     println!("Hello, {}!", name);
+}
+
+fn practice_15_3() {
+    // {
+    //     let c = CustomSmartPointer { data: String::from("my stuff") };
+    //     let d = CustomSmartPointer { data: String::from("other stuff") };
+    //     
+    //     println!("CustomSmartPointers created.");
+    //     // 変数は生成された順番の逆順でドロップされる
+    // }
+    
+    // std::mem::dropで早期に値をドロップする
+    // Dropトレイトのdropメソッドを手動で呼ぶことは出来ない。
+    // スコープが終わる前に値を強制的にドロップさせたい場合、 標準ライブラリが提供するstd::mem::drop関数を呼ぶ必要がある。
+    {
+        let c = CustomSmartPointer { data: String::from("some data") };
+        println!("CustomSmartPointer created.");
+        drop(c);
+        println!("CustomSmartPointer dropped before the end of main.");
+    }
+}
+
+struct CustomSmartPointer {
+    data: String,
+}
+
+impl Drop for CustomSmartPointer {
+    // インスタンスがスコープから抜け出す際に呼び出される
+    fn drop(&mut self) {
+        println!("Dropping CustomSmartPointer with data `{}`!", self.data);
+    }
 }
