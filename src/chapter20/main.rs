@@ -10,7 +10,12 @@ fn main() {
     
     for stream in listener.incoming() {
         let stream = stream.unwrap();
-        handle_connection(stream);
+        
+        // リクエスト毎にスレッドを立ち上げる方式
+        // スレッド数が無制限になり、DoS攻撃によりサーバーのリソースを使い尽くされてしまう恐れがある
+        thread::spawn(|| {
+            handle_connection(stream);
+        });
     }
 }
 
