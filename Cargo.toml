@@ -51,4 +51,4 @@ path = "src/chapter16/main.rs"
 
 [[bin]]
 name = "chap20"
-path = "src/chapter20/main.rs"
+path = "src/chapter20/bin/main.rs"

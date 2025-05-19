@@ -1,19 +1,18 @@
 use fs::File;
-use std::fmt::format;
 use std::{fs, thread};
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::time::Duration;
+use rust_programming_language::chapter20::ThreadPool;
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
-    
+    let pool = ThreadPool::new(4);
+
     for stream in listener.incoming() {
         let stream = stream.unwrap();
-        
-        // リクエスト毎にスレッドを立ち上げる方式
-        // スレッド数が無制限になり、DoS攻撃によりサーバーのリソースを使い尽くされてしまう恐れがある
-        thread::spawn(|| {
+
+        pool.execute(|| {
             handle_connection(stream);
         });
     }
@@ -22,7 +21,7 @@ fn main() {
 fn handle_connection(mut stream: TcpStream) {
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).unwrap();
-    
+
     // /に対応するリクエストかどうかを判定するための変数
     let get = b"GET / HTTP/1.1\r\n";
     let sleep = b"GET /sleep HTTP/1.1\r\n";
