@@ -5,7 +5,7 @@ use std::thread::Thread;
 
 pub struct ThreadPool {
     workers: Vec<Worker>,
-    sender: Sender<Job>
+    sender: Sender<Message>
 }
 
 trait FnBox {
@@ -44,12 +44,18 @@ impl ThreadPool {
     pub fn execute<F>(&self, f: F) where F: FnOnce() + Send + 'static {
         let job = Box::new(f);
         
-        self.sender.send(job).unwrap();
+        self.sender.send(Message::NewJob(job)).unwrap();
     }
 }
 
 impl Drop for ThreadPool {
     fn drop(&mut self) {
+        println!("Sending terminate message to all workers.");
+        
+        for _ in &mut self.workers {
+            self.sender.send(Message::Terminate).unwrap();
+        }
+        
         for worker in &mut self.workers {
             println!("Shutting down worker {}.", worker.id);
             
@@ -67,14 +73,23 @@ struct Worker {
 }
 
 impl Worker {
-    fn new(id: usize, receiver: Arc<Mutex<Receiver<Job>>>) -> Worker {
+    fn new(id: usize, receiver: Arc<Mutex<Receiver<Message>>>) -> Worker {
         let thread = thread::spawn(move|| {
             loop {
-                let job = receiver.lock().unwrap().recv().unwrap();
+                let message = receiver.lock().unwrap().recv().unwrap();
                 
-                println!("Worker {} got a job; executing.", id);
-                
-                job.call_box();
+                match message {
+                    Message::NewJob(job) => {
+                        println!("Worker {} got a job; executing.", id);
+
+                        job.call_box();
+                    },
+                    Message::Terminate => {
+                        println!("Worker {} was told to terminate.", id);
+                        
+                        break;
+                    }
+                }
             }
         });
         
@@ -83,4 +98,9 @@ impl Worker {
             thread: Some(thread),
         }
     }
+}
+
+enum Message {
+    NewJob(Job),
+    Terminate,
 }
