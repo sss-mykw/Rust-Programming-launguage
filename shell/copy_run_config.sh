@@ -12,7 +12,7 @@ else
 fi
 
 # 実行コマンドを作成
-run_cmd="run --package Rust-Programming-launguage --bin chap$chapter_num"
+run_cmd="run --package rust-programming-language --bin chap$chapter_num"
 
 # コマンドをクリップボードにコピー（macOS: pbcopy）
 echo "$run_cmd" | pbcopy
